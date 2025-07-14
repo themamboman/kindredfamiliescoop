@@ -1,7 +1,7 @@
 // src/app/admin/applications/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import {
   collection,
