@@ -17,7 +17,6 @@ interface Application {
   phone: string;
   email: string;
   address: string;
-  emergencyContact: string;
   maritalStatus: string;
   currentlyHomeschooling: string;
   homeschoolingDuration: string;
@@ -34,7 +33,7 @@ interface Application {
   volunteerAreas: string;
   skills: string;
   scheduling: string;
-  commitment: string;
+  commitment: boolean; 
   photoConsent: boolean;
   otherInfo: string;
   children: { name: string; age: string; grade: string }[];
@@ -232,7 +231,6 @@ Thank you,\nKindred Families`);
               <>
                 <p><strong>Phone:</strong> {selectedApp.phone}</p>
                 <p><strong>Address:</strong> {selectedApp.address}</p>
-                <p><strong>Emergency Contact:</strong> {selectedApp.emergencyContact}</p>
               </>
             ))}
 

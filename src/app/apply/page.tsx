@@ -52,6 +52,7 @@ export default function ApplyPage() {
         currentlyHomeschooling,
         homeschoolingDuration,
         coopExperience,
+        otherCoops,
         church,
         referralSource,
         parentFaith,
