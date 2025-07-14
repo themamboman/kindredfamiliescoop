@@ -27,7 +27,7 @@ export default function ApplyPage() {
   const [volunteerAreas, setVolunteerAreas] = useState("");
   const [skills, setSkills] = useState("");
   const [scheduling, setScheduling] = useState("");
-  const [commitment, setCommitment] = useState("");
+  const [commitment, setCommitment] = useState(false);
   const [photoConsent, setPhotoConsent] = useState(false);
   const [otherInfo, setOtherInfo] = useState("");
   const [children, setChildren] = useState([{ name: "", age: "", grade: "" }]);
