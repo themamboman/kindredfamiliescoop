@@ -67,7 +67,8 @@ export default function AdminApplicationsPage() {
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data() as Application;
         if (!data.demo) {
-          apps.push({ id: docSnap.id, ...data });
+	    const { id: _ignoreId, ...rest } = data;
+            apps.push({ id: docSnap.id, ...rest });
         }
       });
       setApplications(apps);
