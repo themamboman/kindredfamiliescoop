@@ -279,7 +279,7 @@ Thank you,\nKindred Families`);
 
             {renderSection("Final Questions", (
               <>
-                <p><strong>Commitment:</strong> {selectedApp.commitment}</p>
+                <p><strong>Commitment:</strong> {selectedApp.commitment ? "Yes" : "No"}</p>
                 <p><strong>Photo Consent:</strong> {selectedApp.photoConsent ? "Yes" : "No"}</p>
                 <p><strong>Other Info:</strong> {selectedApp.otherInfo}</p>
               </>
