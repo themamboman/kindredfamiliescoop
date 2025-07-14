@@ -75,7 +75,9 @@ export default function ApplyPage() {
       setError(err.message || "Submission failed");
     }
   };
-
+  
+  const isFormValid = statementAgreement && communityStandards && commitment;
+  
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8">
@@ -160,7 +162,7 @@ export default function ApplyPage() {
             <div className="flex flex-col items-start">
               <label className="flex items-start space-x-2">
                 <input type="checkbox" checked={statementAgreement} onChange={(e) => setStatementAgreement(e.target.checked)} />
-                <span>I agree with the Statement of Faith</span>
+                <span>I agree with the Statement of Faith</span> <span className="text-red-600">*</span>
               </label>
               <button type="button" onClick={() => setShowFaithModal(true)} className="text-blue-600 text-xs mt-1 self-center">View Statement of Faith</button>
             </div>
@@ -168,7 +170,7 @@ export default function ApplyPage() {
             <div className="flex flex-col items-start">
               <label className="flex items-start space-x-2">
                 <input type="checkbox" checked={communityStandards} onChange={(e) => setCommunityStandards(e.target.checked)} />
-                <span>I agree to the Community Standards</span>
+                <span>I agree to the Community Standards</span> <span className="text-red-600">*</span>
               </label>
               <button type="button" onClick={() => setShowConductModal(true)} className="text-blue-600 text-xs mt-1 self-center">View Community Standards</button>
             </div>
@@ -179,7 +181,7 @@ export default function ApplyPage() {
 
             <label className="flex items-center space-x-2">
               <input type="checkbox" checked={commitment} onChange={(e) => setCommitment(e.target.checked)} />
-              <span>Are you able to commit to regular attendance and active participation during the semester/year?</span>
+              <span>Are you able to commit to regular attendance and active participation during the semester/year?</span> <span className="text-red-600">*</span>
             </label>
             <label className="flex items-center space-x-2">
               <input type="checkbox" checked={photoConsent} onChange={(e) => setPhotoConsent(e.target.checked)} />
@@ -193,8 +195,13 @@ export default function ApplyPage() {
             />
           </div>
 
-
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-6">
+          <p className="text-xs text-gray-500 italic">Fields marked with <span className="text-red-600">*</span> are required to submit an application.</p>
+  
+          <button
+            type="submit"
+            disabled={!isFormValid}
+            className={`w-full py-2 rounded mt-6 ${isFormValid ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+          >
             Submit Application
           </button>
           {message && <p className="text-green-600 text-center mt-4">{message}</p>}
