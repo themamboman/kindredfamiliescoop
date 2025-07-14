@@ -1,5 +1,5 @@
 // middleware.ts
-/*
+/*1
 import { NextResponse } from 'next/server';
 import { auth } from './lib/firebase';
 

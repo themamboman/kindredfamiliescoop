@@ -1,4 +1,4 @@
-// File: G:\dev\kindredfamilies\fix\src\app\layout.tsx
+// File: G:\dev\kindredfamilies\final\src\app\layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
