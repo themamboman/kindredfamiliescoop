@@ -57,13 +57,14 @@ export default function AdminApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const router = useRouter();
-  const [authorized, setAuthorized] = useState<boolean | null>(null); // null = loading
+  //const [authorized, setAuthorized] = useState<boolean | null>(null); // null = loading
+  const [authorized, setAuthorized] = useState(true); // null = loading
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
   const currentUserEmail =
     typeof window !== "undefined"
       ? localStorage.getItem("adminEmail") || "admin"
       : "admin";
-
+/*
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -76,7 +77,6 @@ export default function AdminApplicationsPage() {
         'themamboman@protonmail.ccom',
         'caitrinw@me.com',
       ];
-
       if (!allowedEmails.includes(user.email ?? '')) {
         router.push('/not-authorized');
       }
@@ -84,7 +84,7 @@ export default function AdminApplicationsPage() {
 
     return () => unsubscribe();
   }, []);
-/*
+*/
   useEffect(() => {
     const fetchApplications = async () => {
       const querySnapshot = await getDocs(collection(db, "applications"));
@@ -102,6 +102,7 @@ export default function AdminApplicationsPage() {
   }, []);
 
 
+/*
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -187,7 +188,7 @@ export default function AdminApplicationsPage() {
     );
     const body = encodeURIComponent(`Thank you for filling out the application to join Kindred Families.
 
-Congratulations! Your application has been approved.
+Your application has been approved.
 
 Please visit the following secure link to complete your enrollment:
 
@@ -222,11 +223,11 @@ Thank you,\nKindred Families`);
 }
 
   // return page contents
-  if (authorized === null) {
-    return <p className="text-center mt-10">Checking admin access...</p>;
-  } else if (!authorized) {
-    UnauthorizedPage();
-  } else {
+  //if (authorized === null) {
+  //  return <p className="text-center mt-10">Checking admin access...</p>;
+  //} else if (!authorized) {
+  //  UnauthorizedPage();
+  //} else {
     return (
       <main className="max-w-6xl mx-auto py-10 px-6">
         <h1 className="text-3xl font-bold text-center text-red-800 mb-8">
@@ -394,4 +395,4 @@ Thank you,\nKindred Families`);
       </main>
     );
   }
-}
+//}
