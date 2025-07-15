@@ -63,6 +63,27 @@ export default function AdminApplicationsPage() {
     typeof window !== "undefined"
       ? localStorage.getItem("adminEmail") || "admin"
       : "admin";
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push('/admin/login');
+        return;
+      }
+
+      // Email whitelist
+      const allowedEmails = [
+        'themamboman@protonmail.ccom',
+        'caitrinw@me.com',
+      ];
+
+      if (!allowedEmails.includes(user.email ?? '')) {
+        router.push('/not-authorized');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 /*
   useEffect(() => {
     const fetchApplications = async () => {
@@ -79,16 +100,15 @@ export default function AdminApplicationsPage() {
     };
     fetchApplications();
   }, []);
-*/
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-debugger;
       if (!user) {
         router.push("/admin/login");
         return;
       }
-console.log('checking email for admin rights: ' + user.email)
+      console.log('checking email for admin rights: ' + user.email)
       const adminRef = doc(db, "admins", "admins_collection");
     //  const adminRef = doc(db, "admins", user.email || "");
       const adminSnap = await getDoc(adminRef);
@@ -119,6 +139,7 @@ console.log('checking email for admin rights: ' + user.email)
 
     return () => unsubscribe();
   }, []);
+*/
 
   const toggleExpanded = (id: string) => {
     setExpandedId(id);
