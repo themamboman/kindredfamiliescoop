@@ -75,9 +75,56 @@ export default function ApplyPage() {
       setError(err.message || "Submission failed");
     }
   };
-  
-  const isFormValid = statementAgreement && communityStandards && commitment;
-  
+  const isValidPhone = (phone: string) => /^\d{10}$/.test(phone.replace(/\D/g, ""));
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase());
+  const isValidDate = (date: string) => {
+  const parsed = Date.parse(date);
+  return !isNaN(parsed);
+};
+
+/*  const isFormValid = statementAgreement && communityStandards && commitment;
+    const isFormValid =
+      parentNames.trim() !== "" &&
+      phone.trim() !== "" &&
+      email.trim() !== "" &&
+      currentlyHomeschooling.trim() !== "" &&
+      homeschoolingDuration.trim() !== "" &&
+      otherCoops.trim() !== "" &&
+      parentFaith.trim() !== "" &&
+      spouseFaith.trim() !== "" &&
+      volunteerWilling === true &&
+      volunteerAreas.trim() !== "" &&
+      skills.trim() !== "" &&
+      scheduling.trim() !== "" &&
+      children.length > 0 &&
+      children.every((child) => child.name.trim() !== "" && child.age.trim() !== "") &&
+      statementAgreement &&
+      communityStandards &&
+      commitment;
+  */
+    const isFormValid =
+      parentNames.trim() !== "" &&
+      isValidPhone(phone) &&
+      isValidEmail(email) &&
+      currentlyHomeschooling.trim() !== "" &&
+      homeschoolingDuration.trim() !== "" &&
+      otherCoops.trim() !== "" &&
+      parentFaith.trim() !== "" &&
+      spouseFaith.trim() !== "" &&
+      //volunteerWilling === true &&
+      //volunteerAreas.trim() !== "" &&
+      //skills.trim() !== "" &&
+      //scheduling.trim() !== "" &&
+      children.length > 0 &&
+      children.every(
+        (child) =>
+          child.name.trim() !== "" &&
+          isValidDate(child.age.trim())
+      ) &&
+      statementAgreement &&
+      communityStandards &&
+      commitment;
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8">
@@ -91,17 +138,17 @@ export default function ApplyPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <h2 className="section-title">Family Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" placeholder="Parent/Guardian Name(s)" className="input" value={parentNames} onChange={(e) => setParentNames(e.target.value)} />
-            <input type="text" placeholder="Phone Number" className="input" value={phone} onChange={(e) => setPhone(e.target.value)} />
-            <input type="email" placeholder="Email Address" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="text" placeholder="Parent/Guardian Name(s)" className="input" value={parentNames} onChange={(e) => setParentNames(e.target.value)} /> <span className="text-red-600">*</span>
+            <input type="text" placeholder="Phone Number" className="input" value={phone} onChange={(e) => setPhone(e.target.value)} /> <span className="text-red-600">*</span>
+            <input type="email" placeholder="Email Address" className="input" value={email} onChange={(e) => setEmail(e.target.value)} /> <span className="text-red-600">*</span>
             <input type="text" placeholder="Home Address" className="input" value={address} onChange={(e) => setAddress(e.target.value)} />
             <input type="text" placeholder="Marital Status (Married/Single/Widowed/Other)" className="input col-span-2" value={maritalStatus} onChange={(e) => setMaritalStatus(e.target.value)} />
           </div>
 
           <h2 className="section-title">Family Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" placeholder="Currently Homeschooling (Yes/No/Planning to start)" className="input" value={currentlyHomeschooling} onChange={(e) => setCurrentlyHomeschooling(e.target.value)} />
-            <input type="text" placeholder="How long have you been homeschooling?" className="input" value={homeschoolingDuration} onChange={(e) => setHomeschoolingDuration(e.target.value)} />
+            <input type="text" placeholder="Currently Homeschooling (Yes/No/Planning to start)" className="input" value={currentlyHomeschooling} onChange={(e) => setCurrentlyHomeschooling(e.target.value)} /> <span className="text-red-600">*</span>
+            <input type="text" placeholder="How long have you been homeschooling?" className="input" value={homeschoolingDuration} onChange={(e) => setHomeschoolingDuration(e.target.value)} /> <span className="text-red-600">*</span>
           </div>
            <input
             type="text"
@@ -109,31 +156,31 @@ export default function ApplyPage() {
             placeholder="Have you been part of any other homeschool co-ops? (Yes / No)"
             value={otherCoops}
             onChange={(e) => setOtherCoops(e.target.value)}
-          />
+          /> <span className="text-red-600">*</span>
           <textarea placeholder="If yes, which ones and what was your experience like?" className="input w-full" value={coopExperience} onChange={(e) => setCoopExperience(e.target.value)} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="text" placeholder="Church you currently attend" className="input" value={church} onChange={(e) => setChurch(e.target.value)} />
             <input type="text" placeholder="How did you hear about Kindred Families?" className="input" value={referralSource} onChange={(e) => setReferralSource(e.target.value)} />
           </div>
 
-          <h2 className="section-title">Children’s Information</h2>
+          <h2 className="section-title">Children’s Information</h2> <span className="text-red-600">*</span>
           {children.map((child, index) => (
             <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <input type="text" placeholder="Full Name" className="input" value={child.name} onChange={(e) => {
                 const updated = [...children];
                 updated[index].name = e.target.value;
                 setChildren(updated);
-              }} />
-              <input type="text" placeholder="Date of Birth" className="input" value={child.age} onChange={(e) => {
+              }} /> 
+              <input type="date" placeholder="Date of Birth" className="input" value={child.age} onChange={(e) => {
                 const updated = [...children];
                 updated[index].age = e.target.value;
                 setChildren(updated);
-              }} />
-              <input type="text" placeholder="Current Grade Level or Learning Stage" className="input" value={child.grade} onChange={(e) => {
+              }} /> 
+              <input type="text" placeholder="Enrolling Grade Level or Learning Stage" className="input" value={child.grade} onChange={(e) => {
                 const updated = [...children];
                 updated[index].grade = e.target.value;
                 setChildren(updated);
-              }} />
+              }} /> 
             </div>
           ))}
           <button type="button" onClick={() => setChildren([...children, { name: "", age: "", grade: "" }])} className="text-blue-600 hover:underline text-sm">
@@ -141,8 +188,8 @@ export default function ApplyPage() {
           </button>
 
           <h2 className="section-title">Faith & Agreement</h2>
-          <textarea placeholder="Please briefly share your personal testimony or faith background:" className="input w-full" value={parentFaith} onChange={(e) => setParentFaith(e.target.value)} />
-          <textarea placeholder="Please share your husband's faith background and current involvement (if applicable):" className="input w-full" value={spouseFaith} onChange={(e) => setSpouseFaith(e.target.value)} />
+          <textarea placeholder="Please briefly share your personal testimony or faith background:" className="input w-full" value={parentFaith} onChange={(e) => setParentFaith(e.target.value)} /> <span className="text-red-600">*</span>
+          <textarea placeholder="Please share your husband's faith background and current involvement (if applicable):" className="input w-full" value={spouseFaith} onChange={(e) => setSpouseFaith(e.target.value)} /> <span className="text-red-600">*</span>
 
           <h2 className="section-title">Co-op Participation</h2>
           <div className="grid grid-cols-1 gap-4">
@@ -151,8 +198,8 @@ export default function ApplyPage() {
               <span>Are you willing to volunteer during co-op days (teaching, assisting, cleaning, setup, etc.)?</span>
             </label>
             <textarea placeholder="What areas are you most interested or comfortable serving in?" className="input w-full" value={volunteerAreas} onChange={(e) => setVolunteerAreas(e.target.value)} />
-            <textarea placeholder="Do you have any skills, hobbies, or experience you'd be willing to share with the group?" className="input w-full" value={skills} onChange={(e) => setSkills(e.target.value)} />
-            <textarea placeholder="Do you have any scheduling limitations or special considerations we should know about?" className="input w-full" value={scheduling} onChange={(e) => setScheduling(e.target.value)} />
+            <textarea placeholder="Do you have any skills, hobbies, or experience you'd be willing to share with the group?" className="input w-full" value={skills} onChange={(e) => setSkills(e.target.value)} /> 
+            <textarea placeholder="Do you have any scheduling limitations or special considerations we should know about?" className="input w-full" value={scheduling} onChange={(e) => setScheduling(e.target.value)} /> 
           </div>
 
 {/* Final Questions Section */}
@@ -196,14 +243,26 @@ export default function ApplyPage() {
           </div>
 
           <p className="text-xs text-gray-500 italic">Fields marked with <span className="text-red-600">*</span> are required to submit an application.</p>
-  
+          <div className="relative group w-full">
           <button
             type="submit"
             disabled={!isFormValid}
-            className={`w-full py-2 rounded mt-6 ${isFormValid ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+            className={`w-full py-2 rounded mt-6 transition ${
+              isFormValid
+                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
           >
             Submit Application
           </button>
+
+          {!isFormValid && (
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-72 text-sm bg-black text-white p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              You must fill out all required fields, as well as agree to the Statement of Faith, Community Standards, and Commitment to Participate before submitting.
+            </div>
+          )}
+        </div>
+
           {message && <p className="text-green-600 text-center mt-4">{message}</p>}
           {error && <p className="text-red-600 text-center mt-4">{error}</p>}
         </form>
@@ -314,4 +373,14 @@ export default function ApplyPage() {
                 <button type="button" onClick={() => setShowConductModal(true)} className="text-blue-600 text-sm self-start mt-1">View</button>
               </span>
             </label>
+
+
+
+                      <button
+            type="submit"
+            disabled={!isFormValid}
+            className={`w-full py-2 rounded mt-6 ${isFormValid ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+          >
+            Submit Application
+          </button>
 */
