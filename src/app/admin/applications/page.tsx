@@ -1,17 +1,11 @@
 // src/app/admin/applications/page.tsx
 "use client";
 
+import {  } from 'firebase/firestore';
 import { JSX, useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  collection,
-  getDoc,
-  getDocs,
-  updateDoc,
-  doc,
-  Timestamp,
-} from "firebase/firestore";
+import { query, where, collection, getDoc, getDocs, updateDoc, doc, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 interface Application {
@@ -64,6 +58,42 @@ export default function AdminApplicationsPage() {
     typeof window !== "undefined"
       ? localStorage.getItem("adminEmail") || "admin"
       : "admin";
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      router.push('/admin/login');
+      return;
+    }
+
+    const q = query(
+      collection(db, 'admins'),
+      where('email', '==', user.email)
+    );
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      router.push('/not-authorized');
+      return;
+    }
+
+    // ✅ Fetch applications only if user is admin
+    const querySnapshot = await getDocs(collection(db, "applications"));
+    const apps: Application[] = [];
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data() as Application;
+      if (!data.demo) {
+        const { id: _ignoreId, ...rest } = data;
+        apps.push({ id: docSnap.id, ...rest });
+      }
+    });
+    setApplications(apps);
+  });
+
+  return () => unsubscribe();
+}, []);
+
+
 /*
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -84,7 +114,7 @@ export default function AdminApplicationsPage() {
 
     return () => unsubscribe();
   }, []);
-*/
+
   useEffect(() => {
     const fetchApplications = async () => {
       const querySnapshot = await getDocs(collection(db, "applications"));
@@ -102,7 +132,7 @@ export default function AdminApplicationsPage() {
   }, []);
 
 
-/*
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
